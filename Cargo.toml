@@ -1,6 +1,6 @@
 [package]
 name = "penny"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
 license = "Apache-2.0"
 authors = ["Federico Maria Morrone <contact@morrone.dev>"]
@@ -9,3 +9,7 @@ repository = "https://github.com/morr0ne/penny"
 publish = false
 
 [dependencies]
+anyhow = "1.0.86"
+clap = { version = "4.5.13", features = ["derive"] }
+pest = "2.7.11"
+pest_derive = "2.7.11"
