@@ -1,4 +1,4 @@
-use crate::ast::{Expr, Program, Stmt, Snuggle, Ty, Cozy};
+use crate::ast::{Expr, Program, Stmt, Snuggle, Ty, Cozy, Call};
 
 grammar;
 
@@ -27,10 +27,24 @@ Stmt: Stmt = {
 
 Expr: Expr = {
     r#""[^"]*""# => Expr::Ribbon(<>.to_string()),
-    <ident:Ident> "()" => Expr::Call
+    <ident:Ident> "(" <args:Comma<Expr>> ")" => Expr::Call(Call { ident, args}),
+    <ident:Ident> "()" => Expr::Call(Call { ident, args: Vec::new() }),
+    Ident => Expr::Variable(<>)
 }
 
 Ty: Ty = {
     "ribbon" => Ty::Ribbon,
     "bunny" => Ty::Bunny,
 }
+
+
+// Helper for comma-separated lists
+Comma<T>: Vec<T> = {
+    <mut v:(<T> ",")*> <e:T?> => match e {
+        None => v,
+        Some(e) => {
+            v.push(e);
+            v
+        }
+    }
+};

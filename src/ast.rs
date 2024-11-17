@@ -26,7 +26,14 @@ pub struct Snuggle {
 #[derive(Debug)]
 pub enum Expr {
     Ribbon(String),
-    Call,
+    Call(Call),
+    Variable(String),
+}
+
+#[derive(Debug)]
+pub struct Call {
+    pub ident: String,
+    pub args: Vec<Expr>,
 }
 
 #[derive(Debug)]
