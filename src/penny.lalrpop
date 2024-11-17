@@ -2,6 +2,13 @@ use crate::ast::{Expr, Program, Stmt, Snuggle, Ty, Cozy};
 
 grammar;
 
+match {
+    r"\s*" => {},
+    r"//[^\n\r]*[\n\r]*" => {},
+    r"/\*([^*/]|\*[^/]|/[^*])*\*/" => {},
+    _
+}
+
 pub Program: Program = {
     <stmts:Stmt*> => Program { stmts }
 }
