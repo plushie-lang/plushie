@@ -16,6 +16,7 @@ cranelift = "0.113.1"
 cranelift-module = "0.113.1"
 cranelift-jit = "0.113.1"
 cranelift-native = "0.113.1"
+unicode-width = "0.2.0"
 
 [build-dependencies]
 lalrpop = "0.22.0"

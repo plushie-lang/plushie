@@ -1,5 +1,6 @@
 use lalrpop_util::ParseError;
 use std::fmt;
+use unicode_width::UnicodeWidthStr;
 
 #[derive(Debug)]
 pub struct Error {
@@ -51,10 +52,7 @@ impl Error {
             }
         }
 
-        // Calculate column (account for tabs)
-        let column = source[last_newline..pos]
-            .chars()
-            .fold(0, |acc, c| acc + if c == '\t' { 8 } else { 1 });
+        let column = source[last_newline..pos].width();
 
         // Extract the relevant line of code
         let source = source[last_newline..]
