@@ -4,6 +4,9 @@ use lalrpop_util::lalrpop_mod;
 use std::{fs, path::PathBuf};
 
 mod ast;
+mod error;
+
+use error::Error;
 
 lalrpop_mod!(pub penny);
 
@@ -20,7 +23,9 @@ fn main() -> Result<()> {
 
     let parser = penny::ProgramParser::new();
 
-    let program = parser.parse(&source).expect("Failed to parse code");
+    let program = parser
+        .parse(&source)
+        .map_err(|error| Error::from_parse_error(&source, error))?;
 
     dbg!(program);
 
