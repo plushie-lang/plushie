@@ -30,7 +30,7 @@ impl fmt::Display for Error {
 
         write!(
             f,
-            "{message}\n> {file_name}:{line}:{column}\n|\n|{source}\n|{pointer}",
+            "{message}\n> {file_name}:{line}:{column}\n|\n| {source}\n| {pointer}",
             pointer = " ".repeat(column - 1) + "^",
         )
     }
