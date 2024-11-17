@@ -4,6 +4,7 @@ use std::fmt;
 #[derive(Debug)]
 pub struct Error {
     pub message: String,
+    pub file_name: String,
     pub snippet: Snippet,
 }
 
@@ -18,18 +19,18 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let Self {
             message,
+            file_name,
             snippet:
                 Snippet {
                     line,
                     column,
                     source,
                 },
-            ..
         } = self;
 
         write!(
             f,
-            "{message}\n> <file>.pb:{line}:{column}\n|\n|{source}\n|{pointer}",
+            "{message}\n> {file_name}:{line}:{column}\n|\n|{source}\n|{pointer}",
             pointer = " ".repeat(column - 1) + "^",
         )
     }
@@ -38,7 +39,7 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 impl Error {
-    fn new(message: String, source: &str, pos: usize) -> Self {
+    fn new(file_name: &str, message: String, source: &str, pos: usize) -> Self {
         let mut line = 1;
         let mut last_newline = 0;
 
@@ -64,6 +65,7 @@ impl Error {
 
         Self {
             message,
+            file_name: file_name.to_string(),
             snippet: Snippet {
                 line,
                 column,
@@ -75,6 +77,7 @@ impl Error {
     pub fn unknown() -> Self {
         Self {
             message: "Unknown parsing error".to_string(),
+            file_name: "unknown".to_string(),
             snippet: Snippet {
                 line: 0,
                 column: 0,
@@ -84,14 +87,19 @@ impl Error {
     }
 
     pub fn from_parse_error(
+        file_name: &str,
         source: &str,
         error: ParseError<usize, lalrpop_util::lexer::Token, &str>,
     ) -> Error {
         match error {
-            ParseError::InvalidToken { location } => {
-                Error::new("Invalid token found".to_string(), source, location)
-            }
+            ParseError::InvalidToken { location } => Error::new(
+                file_name,
+                "Invalid token found".to_string(),
+                source,
+                location,
+            ),
             ParseError::UnrecognizedEof { location, expected } => Error::new(
+                file_name,
                 format!(
                     "Unexpected end of file. Expected one of: {}",
                     expected.join(", ")
@@ -103,6 +111,7 @@ impl Error {
                 token: (start, token, _end),
                 expected,
             } => Error::new(
+                file_name,
                 format!(
                     "Unexpected token '{token}'. Expected one of: {}",
                     expected.join(", ")
@@ -112,7 +121,12 @@ impl Error {
             ),
             ParseError::ExtraToken {
                 token: (start, token, _end),
-            } => Error::new(format!("Extra token '{token}' found"), source, start),
+            } => Error::new(
+                file_name,
+                format!("Extra token '{token}' found"),
+                source,
+                start,
+            ),
             ParseError::User { .. } => Error::unknown(),
         }
     }
