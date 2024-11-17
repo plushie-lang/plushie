@@ -1,12 +1,11 @@
 use anyhow::Result;
 use clap::Parser;
-use pest::Parser as _;
+use lalrpop_util::lalrpop_mod;
 use std::{fs, path::PathBuf};
 
-mod parser;
-// mod jit;
+mod ast;
 
-use parser::{PennyParser, Rule};
+lalrpop_mod!(pub penny);
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -19,16 +18,11 @@ fn main() -> Result<()> {
     let Args { source } = Args::parse();
     let source = fs::read_to_string(source)?;
 
-    let pairs = PennyParser::parse(Rule::program, &source)?;
-    println!("parse tree = {:#?}", pairs);
+    let parser = penny::ProgramParser::new();
 
-    for pair in pairs {
-        match pair.as_rule() {
-            rule => {
-                dbg!(rule);
-            }
-        }
-    }
+    let program = parser.parse(&source).expect("Failed to parse code");
+
+    dbg!(program);
 
     Ok(())
 }

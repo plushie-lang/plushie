@@ -1,0 +1,29 @@
+use crate::ast::{Expr, Program, Stmt, Snuggle, Ty, Cozy};
+
+grammar;
+
+pub Program: Program = {
+    <stmts:Stmt*> => Program { stmts }
+}
+
+Ident: String = r"[a-zA-Z_][a-zA-Z0-9_]*" => <>.to_string();
+
+Stmt: Stmt = {
+    "cozy" <ident:Ident> ":" <ty:Ty> "=" <expr:Expr> ";" => {
+        Stmt::Cozy(Cozy { ident, ty, expr })
+    },
+    "snuggle" <ident:Ident> "()" "{" <stmts:Stmt*> "}" => {
+        Stmt::Snuggle(Snuggle { ident, stmts })
+    },
+    <expr:Expr> ";" => Stmt::Expr(expr)
+}
+
+Expr: Expr = {
+    r#""[^"]*""# => Expr::Ribbon(<>.to_string()),
+    <ident:Ident> "()" => Expr::Call
+}
+
+Ty: Ty = {
+    "ribbon" => Ty::Ribbon,
+    "bunny" => Ty::Bunny,
+}
