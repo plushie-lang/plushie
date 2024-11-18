@@ -5,20 +5,20 @@ pub struct Program {
 
 #[derive(Debug)]
 pub enum Stmt {
-    Cozy(Cozy),
-    Snuggle(Snuggle),
+    Decl(Decl),
+    Func(Func),
     Expr(Expr),
 }
 
 #[derive(Debug)]
-pub struct Cozy {
+pub struct Decl {
     pub ident: String,
     pub ty: Ty,
     pub expr: Expr,
 }
 
 #[derive(Debug)]
-pub struct Snuggle {
+pub struct Func {
     pub ident: String,
     pub stmts: Vec<Stmt>,
 }
@@ -27,7 +27,7 @@ pub struct Snuggle {
 pub enum Expr {
     Ribbon(String),
     Call(Call),
-    Variable(String),
+    Cozy(String),
 }
 
 #[derive(Debug)]

@@ -1,4 +1,4 @@
-use crate::ast::{Expr, Program, Stmt, Snuggle, Ty, Cozy, Call};
+use crate::ast::{Expr, Program, Stmt, Func, Ty, Decl, Call};
 
 grammar;
 
@@ -17,10 +17,10 @@ Ident: String = r"[a-zA-Z_][a-zA-Z0-9_]*" => <>.to_string();
 
 Stmt: Stmt = {
     "cozy" <ident:Ident> ":" <ty:Ty> "=" <expr:Expr> ";" => {
-        Stmt::Cozy(Cozy { ident, ty, expr })
+        Stmt::Decl(Decl { ident, ty, expr })
     },
     "snuggle" <ident:Ident> "()" "{" <stmts:Stmt*> "}" => {
-        Stmt::Snuggle(Snuggle { ident, stmts })
+        Stmt::Func(Func { ident, stmts })
     },
     <expr:Expr> ";" => Stmt::Expr(expr)
 }
@@ -29,7 +29,7 @@ Expr: Expr = {
     r#""[^"]*""# => Expr::Ribbon(<>.to_string()),
     <ident:Ident> "(" <args:Comma<Expr>> ")" => Expr::Call(Call { ident, args}),
     <ident:Ident> "()" => Expr::Call(Call { ident, args: Vec::new() }),
-    Ident => Expr::Variable(<>)
+    Ident => Expr::Cozy(<>)
 }
 
 Ty: Ty = {
