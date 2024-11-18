@@ -1,14 +1,13 @@
 use anyhow::Result;
 use clap::Parser;
-use lalrpop_util::lalrpop_mod;
 use std::{fs, path::PathBuf};
 
 mod ast;
 mod error;
+mod parser;
 
 use error::Error;
-
-lalrpop_mod!(pub penny);
+use parser::ProgramParser;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -22,7 +21,7 @@ fn main() -> Result<()> {
     let file_name = source.display().to_string();
     let source = fs::read_to_string(source)?;
 
-    let parser = penny::ProgramParser::new();
+    let parser = ProgramParser::new();
 
     let program = parser
         .parse(&source)
