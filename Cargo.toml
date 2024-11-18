@@ -22,6 +22,9 @@ cranelift-module = "0.113.1"
 cranelift-jit = "0.113.1"
 cranelift-native = "0.113.1"
 unicode-width = "0.2.0"
+oxc_ast = "0.36.0"
+oxc_codegen = "0.36.0"
+oxc_minifier = "0.36.0"
 
 [build-dependencies]
 lalrpop = "0.22.0"
