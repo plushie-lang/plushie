@@ -2,12 +2,7 @@ use anyhow::Result;
 use clap::Parser;
 use std::{fs, path::PathBuf};
 
-mod ast;
-mod error;
-mod parser;
-
-use error::Error;
-use parser::ProgramParser;
+use penny::{error::Error, parser::ProgramParser};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
