@@ -84,15 +84,13 @@ impl<'a> AstConverter<'a> {
             ast::Expr::Ribbon(value) => {
                 ast_builder.expression_string_literal(Span::default(), value)
             }
-            ast::Expr::Call(call) => {
-                todo!();
-
-                // ast_builder.expression_call(
-                //     Span::default(),
-                //     // ast_builder.expression_call(Span::default(), callee, type_parameters, arguments, optional),
-                //     todo!(),
-                // )
-            }
+            ast::Expr::Call(ast::Call { ident, args }) => ast_builder.expression_call(
+                Span::default(),
+                ast_builder.expression_identifier_reference(Span::default(), ident),
+                None::<oxc_ast::TSTypeParameterInstantiation>,
+                ast_builder.vec(),
+                false,
+            ),
             ast::Expr::Cozy(_) => todo!(),
         }
     }
