@@ -13,16 +13,33 @@ lto = true
 codegen-units = 1
 strip = true
 
+[features]
+bin = ["dep:clap"]
+js = ["dep:oxc"]
+native = [
+    "dep:cranelift",
+    "dep:cranelift-module",
+    "dep:cranelift-jit",
+    "dep:cranelift-native",
+]
+
 [dependencies]
 anyhow = "1.0.93"
-clap = { version = "4.5.21", features = ["derive"] }
 lalrpop-util = { version = "0.22.0", features = ["lexer", "unicode"] }
-cranelift = "0.114"
-cranelift-module = "0.114"
-cranelift-jit = "0.114"
-cranelift-native = "0.114"
 unicode-width = "0.2.0"
-oxc = { version = "0.38.0", features = ["full"] }
+
+# Bin
+clap = { version = "4.5.21", features = ["derive"], optional = true }
+
+# Cranelift stuff
+cranelift = { version = "0.114", optional = true }
+cranelift-module = { version = "0.114", optional = true }
+cranelift-jit = { version = "0.114", optional = true }
+cranelift-native = { version = "0.114", optional = true }
+
+# Js depedencies
+oxc = { version = "0.38.0", features = ["full"], optional = true }
+
 
 [build-dependencies]
 lalrpop = "0.22.0"
