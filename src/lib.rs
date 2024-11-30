@@ -32,7 +32,7 @@ impl<'a> AstConverter<'a> {
 
         ast_builder.program(
             Span::default(),
-            SourceType::cjs(),
+            SourceType::mjs(),
             "",
             ast_builder.vec(),
             None,
