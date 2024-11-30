@@ -17,14 +17,15 @@ strip = true
 anyhow = "1.0.93"
 clap = { version = "4.5.21", features = ["derive"] }
 lalrpop-util = { version = "0.22.0", features = ["lexer", "unicode"] }
-cranelift = "0.113.1"
-cranelift-module = "0.113.1"
-cranelift-jit = "0.113.1"
-cranelift-native = "0.113.1"
+cranelift = "0.114"
+cranelift-module = "0.114"
+cranelift-jit = "0.114"
+cranelift-native = "0.114"
 unicode-width = "0.2.0"
-oxc_ast = "0.36.0"
-oxc_codegen = "0.36.0"
-oxc_minifier = "0.36.0"
+oxc_ast = "0.38.0"
+oxc_codegen = "0.38.0"
+oxc_minifier = "0.38.0"
+oxc_allocator = "0.38.0"
 
 [build-dependencies]
 lalrpop = "0.22.0"
