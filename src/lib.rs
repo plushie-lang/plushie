@@ -9,7 +9,10 @@ use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "js")]
 use oxc::{
-    allocator::{Allocator, Box as OxcBox, Vec as OxcVec},
+    allocator::{
+        Allocator,
+        // Box as OxcBox, Vec as OxcVec
+    },
     ast::{ast as oxc_ast, AstBuilder},
     codegen::Codegen,
     span::{SourceType, Span},
@@ -45,7 +48,7 @@ impl<'a> AstConverter<'a> {
         let ast_builder = self.ast_builder;
 
         match stmt {
-            ast::Stmt::Decl(ast::Decl { ident, ty, expr }) => {
+            ast::Stmt::Decl(ast::Decl { ident, ty: _, expr }) => {
                 oxc_ast::Statement::VariableDeclaration(ast_builder.alloc_variable_declaration(
                     Span::default(),
                     oxc_ast::VariableDeclarationKind::Let,
@@ -68,9 +71,30 @@ impl<'a> AstConverter<'a> {
                     false,
                 ))
             }
-            ast::Stmt::Func(func) => oxc_ast::Statement::EmptyStatement(
-                ast_builder.alloc_empty_statement(Span::default()),
-            ),
+            ast::Stmt::Func(ast::Func { ident, stmts }) => {
+                oxc_ast::Statement::FunctionDeclaration(ast_builder.alloc_function(
+                    oxc_ast::FunctionType::FunctionDeclaration,
+                    Span::default(),
+                    Some(ast_builder.binding_identifier(Span::default(), ident)),
+                    false,
+                    false,
+                    false,
+                    None::<oxc_ast::TSTypeParameterDeclaration>,
+                    None::<oxc_ast::TSThisParameter>,
+                    ast_builder.alloc_formal_parameters(
+                        Span::default(),
+                        oxc_ast::FormalParameterKind::FormalParameter,
+                        ast_builder.vec(),
+                        None::<oxc_ast::BindingRestElement>,
+                    ),
+                    None::<oxc_ast::TSTypeAnnotation>,
+                    Some(ast_builder.alloc_function_body(
+                        Span::default(),
+                        ast_builder.vec(),
+                        ast_builder.vec_from_iter(stmts.iter().map(|s| self.convert_stmt(s))),
+                    )),
+                ))
+            }
             ast::Stmt::Expr(expr) => oxc_ast::Statement::ExpressionStatement(
                 ast_builder.alloc_expression_statement(Span::default(), self.convert_expr(expr)),
             ),
