@@ -13,6 +13,9 @@ lto = true
 codegen-units = 1
 strip = true
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [features]
 bin = ["dep:clap"]
 js = ["dep:oxc"]
@@ -22,6 +25,7 @@ native = [
     "dep:cranelift-jit",
     "dep:cranelift-native",
 ]
+wasm = ["dep:wasm-bindgen"]
 
 [dependencies]
 anyhow = "1.0.93"
@@ -39,6 +43,9 @@ cranelift-native = { version = "0.114", optional = true }
 
 # Js depedencies
 oxc = { version = "0.38.0", features = ["full"], optional = true }
+
+# Wasm support
+wasm-bindgen = { version = "0.2.97", optional = true }
 
 
 [build-dependencies]
