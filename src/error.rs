@@ -1,6 +1,8 @@
 use lalrpop_util::ParseError;
 use std::fmt;
 use unicode_width::UnicodeWidthStr;
+#[cfg(feature = "wasm")]
+use wasm_bindgen::JsValue;
 
 #[derive(Debug)]
 pub struct Error {
@@ -38,6 +40,13 @@ impl fmt::Display for Error {
 }
 
 impl std::error::Error for Error {}
+
+#[cfg(feature = "wasm")]
+impl Into<JsValue> for Error {
+    fn into(self) -> JsValue {
+        JsValue::null() // FIXME: somehow convert the error
+    }
+}
 
 impl Error {
     fn new(file_name: &str, message: String, source: &str, pos: usize) -> Self {

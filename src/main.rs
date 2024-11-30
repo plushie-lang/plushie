@@ -27,11 +27,11 @@ fn main() -> Result<()> {
 
             path.set_extension("js");
 
-            fs::write(&path, compile_to_js(&source))?;
+            fs::write(&path, compile_to_js(&source)?)?;
         }
         Commands::Run { path } => {
             let source = fs::read_to_string(&path)?;
-            let source = compile_to_js(&source);
+            let source = compile_to_js(&source)?;
 
             Command::new("deno")
                 .arg("eval")

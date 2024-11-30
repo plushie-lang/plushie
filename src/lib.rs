@@ -129,13 +129,12 @@ const JS_PRELUDE: &str = include_str!("prelude.js");
 
 #[cfg(feature = "js")]
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
-pub fn compile_to_js(source: &str) -> String {
+pub fn compile_to_js(source: &str) -> Result<String, crate::error::Error> {
     let parser = ProgramParser::new();
 
     let program = parser
         .parse(&source)
-        .map_err(|error| Error::from_parse_error("unknown", &source, error))
-        .expect("Failed");
+        .map_err(|error| Error::from_parse_error("unknown", &source, error))?;
 
     let allocator = Allocator::default();
 
@@ -143,5 +142,5 @@ pub fn compile_to_js(source: &str) -> String {
     let program = converter.convert(program);
     let js = Codegen::new().build(&program);
 
-    format!("{JS_PRELUDE}{}", js.code)
+    Ok(format!("{JS_PRELUDE}{}", js.code))
 }
