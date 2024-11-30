@@ -26,7 +26,7 @@ Stmt: Stmt = {
 }
 
 Expr: Expr = {
-    r#""[^"]*""# => Expr::Ribbon(<>.to_string()),
+    r#""[^"]*""# => Expr::Ribbon(<>.trim_matches('"').to_string()),
     <ident:Ident> "(" <args:Comma<Expr>> ")" => Expr::Call(Call { ident, args}),
     <ident:Ident> "()" => Expr::Call(Call { ident, args: Vec::new() }),
     Ident => Expr::Cozy(<>)
