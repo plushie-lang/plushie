@@ -1,25 +1,36 @@
-use anyhow::Result;
-use clap::Parser;
 use std::{fs, path::PathBuf};
 
-use penny::{compile_to_js, error::Error, parser::ProgramParser};
+use anyhow::Result;
+use clap::{Parser, Subcommand};
 
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Args {
-    #[arg()]
-    source: PathBuf,
+use penny::compile_to_js;
+
+#[derive(Parser)]
+#[command(version, about)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    Build { path: PathBuf },
+    Run,
 }
 
 fn main() -> Result<()> {
-    let Args { mut source } = Args::parse();
-    let src = fs::read_to_string(&source)?;
+    let Cli { command } = Cli::parse();
 
-    let js = compile_to_js(&src);
+    match command {
+        Commands::Build { mut path } => {
+            let source = fs::read_to_string(&path)?;
 
-    source.set_extension("js");
+            path.set_extension("js");
 
-    fs::write(&source, js)?;
+            fs::write(&path, compile_to_js(&source))?;
+        }
+        Commands::Run => todo!(),
+    }
 
     Ok(())
 }

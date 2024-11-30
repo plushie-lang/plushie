@@ -33,7 +33,13 @@ lalrpop-util = { version = "0.22.0", features = ["lexer", "unicode"] }
 unicode-width = "0.2.0"
 
 # Bin
-clap = { version = "4.5.21", features = ["derive"], optional = true }
+clap = { version = "4.5.21", features = [
+    "cargo",
+    "derive",
+    "env",
+    "unicode",
+    "wrap_help",
+], optional = true }
 
 # Cranelift stuff
 cranelift = { version = "0.114", optional = true }
