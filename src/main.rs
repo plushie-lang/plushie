@@ -1,4 +1,4 @@
-use std::{fs, path::PathBuf};
+use std::{fs, path::PathBuf, process::Command};
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
@@ -15,7 +15,7 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     Build { path: PathBuf },
-    Run,
+    Run { path: PathBuf },
 }
 
 fn main() -> Result<()> {
@@ -29,7 +29,16 @@ fn main() -> Result<()> {
 
             fs::write(&path, compile_to_js(&source))?;
         }
-        Commands::Run => todo!(),
+        Commands::Run { path } => {
+            let source = fs::read_to_string(&path)?;
+            let source = compile_to_js(&source);
+
+            Command::new("deno")
+                .arg("eval")
+                .arg(source)
+                .spawn()?
+                .wait()?;
+        }
     }
 
     Ok(())
