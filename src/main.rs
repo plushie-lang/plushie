@@ -17,7 +17,7 @@ fn main() -> Result<()> {
 
     let js = compile_to_js(&src);
 
-    source.set_extension(".js");
+    source.set_extension("js");
 
     fs::write(&source, js)?;
 
