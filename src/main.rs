@@ -2,7 +2,7 @@ use anyhow::Result;
 use clap::Parser;
 use std::{fs, path::PathBuf};
 
-use penny::{error::Error, parser::ProgramParser};
+use penny::{compile_to_js, error::Error, parser::ProgramParser};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -12,17 +12,14 @@ struct Args {
 }
 
 fn main() -> Result<()> {
-    let Args { source } = Args::parse();
-    let file_name = source.display().to_string();
-    let source = fs::read_to_string(source)?;
+    let Args { mut source } = Args::parse();
+    let src = fs::read_to_string(&source)?;
 
-    let parser = ProgramParser::new();
+    let js = compile_to_js(&src);
 
-    let program = parser
-        .parse(&source)
-        .map_err(|error| Error::from_parse_error(&file_name, &source, error))?;
+    source.set_extension(".js");
 
-    dbg!(program);
+    fs::write(&source, js)?;
 
     Ok(())
 }
