@@ -88,10 +88,15 @@ impl<'a> AstConverter<'a> {
                 Span::default(),
                 ast_builder.expression_identifier_reference(Span::default(), ident),
                 None::<oxc_ast::TSTypeParameterInstantiation>,
-                ast_builder.vec(),
+                ast_builder.vec_from_iter(
+                    args.iter()
+                        .map(|arg| oxc_ast::Argument::from(self.convert_expr(arg))),
+                ),
                 false,
             ),
-            ast::Expr::Cozy(_) => todo!(),
+            ast::Expr::Cozy(value) => {
+                ast_builder.expression_identifier_reference(Span::default(), value)
+            }
         }
     }
 }
@@ -112,5 +117,7 @@ pub fn compile_to_js(source: &str) -> String {
     let program = converter.convert(program);
     let js = Codegen::new().build(&program);
 
-    js.code
+    let prelude = "const whisper = console.log;\n";
+
+    format!("{prelude}{}", js.code)
 }
