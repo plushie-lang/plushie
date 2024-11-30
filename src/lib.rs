@@ -125,6 +125,8 @@ impl<'a> AstConverter<'a> {
     }
 }
 
+const JS_PRELUDE: &str = include_str!("prelude.js");
+
 #[cfg(feature = "js")]
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 pub fn compile_to_js(source: &str) -> String {
@@ -141,7 +143,5 @@ pub fn compile_to_js(source: &str) -> String {
     let program = converter.convert(program);
     let js = Codegen::new().build(&program);
 
-    let prelude = "const whisper = console.log;\n";
-
-    format!("{prelude}{}", js.code)
+    format!("{JS_PRELUDE}{}", js.code)
 }

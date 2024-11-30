@@ -1,0 +1,1 @@
+const whisper = console.log;
