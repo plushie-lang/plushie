@@ -1,0 +1,10 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@penny/compiler",
+  "version": "0.0.1",
+  "exports": "./pkg/penny.d.ts",
+  "publish": {
+    "include": ["pkg/*"],
+    "exclude": ["!pkg"]
+  }
+}
