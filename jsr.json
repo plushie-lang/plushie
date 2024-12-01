@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "exports": "./pkg/penny.d.ts",
   "publish": {
-    "include": ["pkg/*"],
+    "include": ["pkg/*", "LICENSE", "README.md"],
     "exclude": ["!pkg"]
   }
 }
