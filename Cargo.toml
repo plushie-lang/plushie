@@ -28,12 +28,12 @@ native = [
 wasm = ["dep:wasm-bindgen"]
 
 [dependencies]
-anyhow = "1.0.93"
+anyhow = "1.0.94"
 lalrpop-util = { version = "0.22.0", features = ["lexer", "unicode"] }
 unicode-width = "0.2.0"
 
 # Bin
-clap = { version = "4.5.21", features = [
+clap = { version = "4.5.23  ", features = [
     "cargo",
     "derive",
     "env",
@@ -48,10 +48,10 @@ cranelift-jit = { version = "0.114", optional = true }
 cranelift-native = { version = "0.114", optional = true }
 
 # Js depedencies
-oxc = { version = "0.38.0", features = ["full"], optional = true }
+oxc = { version = "0.40.1", features = ["full"], optional = true }
 
 # Wasm support
-wasm-bindgen = { version = "0.2.97", optional = true }
+wasm-bindgen = { version = "0.2.99", optional = true }
 
 
 [build-dependencies]

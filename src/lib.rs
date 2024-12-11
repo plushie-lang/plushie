@@ -106,7 +106,7 @@ impl<'a> AstConverter<'a> {
 
         match expr {
             ast::Expr::Ribbon(value) => {
-                ast_builder.expression_string_literal(Span::default(), value)
+                ast_builder.expression_string_literal(Span::default(), value, None)
             }
             ast::Expr::Call(ast::Call { ident, args }) => ast_builder.expression_call(
                 Span::default(),
