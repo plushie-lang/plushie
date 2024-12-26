@@ -73,8 +73,8 @@ impl<'a> AstConverter<'a> {
             }
             ast::Stmt::Func(ast::Func { ident, stmts }) => {
                 oxc_ast::Statement::FunctionDeclaration(ast_builder.alloc_function(
-                    oxc_ast::FunctionType::FunctionDeclaration,
                     Span::default(),
+                    oxc_ast::FunctionType::FunctionDeclaration,
                     Some(ast_builder.binding_identifier(Span::default(), ident)),
                     false,
                     false,
