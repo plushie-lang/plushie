@@ -3,7 +3,7 @@ use std::{fs, path::PathBuf, process::Command};
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 
-use penny::compile_to_js;
+use plushie::compile_to_js;
 
 #[derive(Parser)]
 #[command(version, about)]

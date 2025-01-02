@@ -1,3 +1,3 @@
-lalrpop_util::lalrpop_mod!(penny);
+lalrpop_util::lalrpop_mod!(plushie);
 
-pub use penny::*;
+pub use plushie::*;

@@ -1,11 +1,11 @@
 [package]
-name = "penny"
+name = "plushie"
 version = "0.0.1"
 edition = "2021"
 license = "Apache-2.0"
 authors = ["Federico Maria Morrone <contact@morrone.dev>"]
 readme = "README.md"
-repository = "https://github.com/penny-lang/penny"
+repository = "https://github.com/plushie-lang/plushie"
 publish = false
 
 [profile.release]
